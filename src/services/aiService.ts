@@ -62,12 +62,71 @@ export const extractDataFromPDF = async (file: File): Promise<any> => {
 
 export const processExcelData = async (data: any[]): Promise<any> => {
   const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-  
-  const response = await model.generateContent(`
-    Process this Excel data and format it into proper invoice, product, and customer data:
-    ${JSON.stringify(data)}
-    Return the result as valid JSON with three arrays: invoices, products, and customers.
-  `);
+  console.log('the data provided in parsexcel',data);
+ 
+  // const response = await model.generateContent(`
+  //  Extract the following information from this Excel data in JSON format: serial number (invoice number or unique identifier), customer name, customer phone number, customer address, product details (name, quantity, unit price, GST percentage, GST amount), discount percentage, tax percentage, tax amount, making charges, debit card charges, shipping charges, taxable amount, CGST, SGST, total amount, date, and bank details (bank name, account number, IFSC code, branch, beneficiary name, UPI). Format the response as valid JSON:
+  //   ${JSON.stringify(data)}
+    
+  // `);
+ 
+const response = await model.generateContent(`
+    Extract the following information from the provided data in JSON format, ensuring the response follows this schema exactly: serial number (invoice number or unique identifier), customer name, customer phone number, customer address, product details (name, quantity, unit price, GST percentage, GST amount), discount percentage, tax percentage, tax amount, making charges, debit card charges, shipping charges, taxable amount, CGST, SGST, total amount, date, and bank details (bank name, account number, IFSC code, branch, beneficiary name, UPI). If any information is missing or unavailable, please use null or "Unknown" as appropriate. 
+
+    **Important: Only provide one object, not an array of objects.**
+
+    The required JSON structure is as follows:
+    {
+      "serial_number": "<Invoice number or unique identifier>",
+      "customer_name": "<Customer name or 'Unknown'>", 
+      "customer_phone_number": "<Phone number or 'Unknown'>", 
+      "customer_address": "<Address or 'Unknown'>", 
+      "product_details": [
+        {
+          "name": "<Product name>",
+          "quantity": "<Quantity>",
+          "unit_price": "<Unit price>",
+          "GST_percentage": "<GST percentage or null>", 
+          "GST_amount": "<GST amount or null>"
+        },
+        {
+          "name": "<Product name>",
+          "quantity": "<Quantity>",
+          "unit_price": "<Unit price>",
+          "GST_percentage": "<GST percentage or null>", 
+          "GST_amount": "<GST amount or null>"
+        },
+        ...
+      ],
+      "discount_percentage": "<Discount percentage or null>",
+      "tax_percentage": "<Tax percentage or null>",
+      "tax_amount": "<Tax amount or null>",
+      "making_charges": "<Making charges or null>",
+      "debit_card_charges": "<Debit card charges or null>",
+      "shipping_charges": "<Shipping charges or null>",
+      "taxable_amount": "<Taxable amount or null>",
+      "CGST": "<CGST or null>",
+      "SGST": "<SGST or null>",
+      "total_amount": "<Total amount>",
+      "date": "<Invoice date>",
+      "bank_details": {
+        "bank_name": "<Bank name or 'Unknown'>",
+        "account_number": "<Account number or 'Unknown'>",
+        "IFSC_code": "<IFSC code or 'Unknown'>",
+        "branch": "<Branch or 'Unknown'>",
+        "beneficiary_name": "<Beneficiary name or 'Unknown'>",
+        "UPI": "<UPI or 'Unknown'>"
+      }
+    }
+
+    Key Notes:
+    - Only one object should be returned, not an array.
+    - The product details section should list all products, and the necessary calculations should be made based on the provided data.
+    - Ensure all required fields are populated, and missing data should be set to null or "Unknown" as appropriate.
+
+    The data to work upon is ${JSON.stringify(data)}
+`);
+
 /*
 //naya wala
 const response = await model.generateContent(`
@@ -81,6 +140,10 @@ const response = await model.generateContent(`
 `);
 
 */
-  const result = await response.response.text();
+ const resultText = await response.response.text();
+    console.log('API Response:', resultText); // Log the response text
+    const result = parseGeminiResponse(resultText); // Parse the response text
+    console.log('Parsed Result:', result); // Log the parsed result
+    return result;
   return JSON.parse(result);
 };

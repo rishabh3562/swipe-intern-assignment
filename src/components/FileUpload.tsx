@@ -36,7 +36,8 @@ export const FileUpload: React.FC = () => {
 
         data = await extractDataFromPDF(file);
         console.log("data in PDF await await call", data);
-      } else if (file.type.includes('sheet') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+      } 
+      else if (file.type.includes('sheet') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
         const reader = new FileReader();
         const result = await new Promise((resolve) => {
           reader.onload = (e) => resolve(e.target?.result);
@@ -46,7 +47,10 @@ export const FileUpload: React.FC = () => {
         const workbook = XLSX.read(result, { type: 'binary' });
         const sheetName = workbook.SheetNames[0];
         const excelData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+        console.log("data in excel before await call", data);
         data = await processExcelData(excelData);
+
+        console.log("data in excel after await call", data);
       } else {
         throw new Error('Unsupported file format');
       }
