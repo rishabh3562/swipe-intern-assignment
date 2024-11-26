@@ -56,7 +56,7 @@ export const FileUpload: React.FC = () => {
           id: data.serial_number,
           serialNumber: data.serial_number,
           customerName: data.customer_name,
-          productName: formatProductNames(data.product_details),  
+          productName: formatProductNames(data.product_details),
           quantity: data.product_details.length,
           tax: data.tax_amount,
           totalAmount: data.total_amount,
@@ -65,7 +65,34 @@ export const FileUpload: React.FC = () => {
         dispatch(addInvoices([inv]));
       }
 
-      if (data.product_details) { dispatch(addProducts(data.product_details)); }
+      if (data.product_details) {
+        const some: any = data.product_details.map((product: any, index: number) => {
+          // Calculate GST amount based on the given logic
+          const tax_by_calc = product.GST_amount
+            ? product.GST_amount
+            : product.GST_percentage
+              ? (product.GST_percentage * product.unit_price * product.quantity) / 100
+              : 0;
+
+          return {
+            id: `${data.serial_number}-${index}`, // Unique key
+            serialNumber: data.serial_number,
+            customerName: data.customer_name,
+            productName: product.name,
+            quantity: product.quantity,
+            unitPrice: product.unit_price,
+            GSTPercentage: product.GST_percentage || 0,
+            GSTAmount: tax_by_calc,
+            totalAmount: product.quantity * product.unit_price + tax_by_calc - (product.discount || 0),
+            discount: product.discount || 0,
+            date: data.date,
+          };
+        });
+
+        dispatch(addProducts(some));
+      }
+
+
       if (data.customers) { dispatch(addCustomers(data.customers)); }
 
       toast.success('File processed successfully');

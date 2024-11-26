@@ -27,7 +27,7 @@ const columns = [
 export const InvoicesTab: React.FC = () => {
   const dispatch = useDispatch();
   const invoices = useSelector((state: RootState) => state.invoices);
-  console.log('Invoices:', invoices);
+  // console.log('Invoices:', invoices);
 
   const handleEdit = (invoice: any) => {
     // Implement edit functionality

@@ -6,11 +6,12 @@ import { updateProduct } from '../../store/slices/productsSlice';
 import { updateInvoiceProduct } from '../../store/slices/invoicesSlice';
 
 const columns = [
-  { key: 'name', header: 'Name', width: '25%' },
+  { key: 'productName', header: 'Name', width: '25%' },
   { key: 'quantity', header: 'Quantity', width: '15%' },
   { key: 'unitPrice', header: 'Unit Price', width: '15%' },
-  { key: 'tax', header: 'Tax', width: '15%' },
-  { key: 'priceWithTax', header: 'Price with Tax', width: '15%' },
+  { key: 'GSTAmount', header: 'Total Tax Amount', width: '15%' },
+  { key: 'GSTPercentage', header: 'Tax % per Item', width: '15%' },
+  { key: 'totalAmount', header: 'Price with Tax', width: '15%' },
   { key: 'discount', header: 'Discount', width: '15%' },
 ];
 
