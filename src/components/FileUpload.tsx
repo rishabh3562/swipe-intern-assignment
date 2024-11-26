@@ -13,12 +13,21 @@ import { Invoice } from '../types';
 export const FileUpload: React.FC = () => {
   const dispatch = useDispatch();
 
+  const formatProductNames = (productDetails: any[], maxLength: number = 5) => {
+    const productNames = productDetails.map((product: any) => product.name);
+
+    if (productNames.length > maxLength) {
+      return `${productNames.slice(0, maxLength).join(", ")}...`;
+    }
+
+    return productNames.join(", ");
+  };
   const processFile = async (file: File) => {
     try {
       let data;
-      
+
       if (file.type.includes('image')) {
-        console.log("data in image before await call",data);
+        console.log("data in image before await call", data);
         data = await extractDataFromImage(file);
         console.log("data in image await await call", data);
 
@@ -33,7 +42,7 @@ export const FileUpload: React.FC = () => {
           reader.onload = (e) => resolve(e.target?.result);
           reader.readAsBinaryString(file);
         });
-        
+
         const workbook = XLSX.read(result, { type: 'binary' });
         const sheetName = workbook.SheetNames[0];
         const excelData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
@@ -42,23 +51,22 @@ export const FileUpload: React.FC = () => {
         throw new Error('Unsupported file format');
       }
 
-      if (data){
-const inv: any={
-  id: data.serial_number,
-  serialNumber: data.serial_number,
-  customerName: data.customer_name,
-  // productName: data,
-  quantity: data.product_details.length,
-  tax: data.tax_amount,
-  totalAmount: data.total_amount,
-  date: data.date,
-  
-
-}
+      if (data) {
+        const inv: any = {
+          id: data.serial_number,
+          serialNumber: data.serial_number,
+          customerName: data.customer_name,
+          productName: formatProductNames(data.product_details),  
+          quantity: data.product_details.length,
+          tax: data.tax_amount,
+          totalAmount: data.total_amount,
+          date: data.date,
+        };
         dispatch(addInvoices([inv]));
       }
-      if (data.product_details) {dispatch(addProducts(data.product_details));}
-      if (data.customers){ dispatch(addCustomers(data.customers));}
+
+      if (data.product_details) { dispatch(addProducts(data.product_details)); }
+      if (data.customers) { dispatch(addCustomers(data.customers)); }
 
       toast.success('File processed successfully');
     } catch (error) {

@@ -4,6 +4,16 @@ import { DataTable } from '../DataTable';
 import { RootState } from '../../store';
 import { updateInvoice } from '../../store/slices/invoicesSlice';
 
+// const columns = [
+//   { key: 'serialNumber', header: 'Serial Number', width: '15%' },
+//   { key: 'customerName', header: 'Customer Name', width: '20%' },
+//   { key: 'productName', header: 'Product Name', width: '20%' },
+//   { key: 'quantity', header: 'Quantity', width: '10%' },
+//   { key: 'tax', header: 'Tax', width: '10%' },
+//   { key: 'totalAmount', header: 'Total Amount', width: '15%' },
+//   { key: 'date', header: 'Date', width: '10%' },
+// ];
+
 const columns = [
   { key: 'serialNumber', header: 'Serial Number', width: '15%' },
   { key: 'customerName', header: 'Customer Name', width: '20%' },
