@@ -19,9 +19,10 @@ interface DataTableProps {
 export const DataTable: React.FC<DataTableProps> = ({ data, columns, onEdit }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fullProductNames, setFullProductNames] = useState<string[]>([]);
-
+console.log(data)
   const handleProductNameClick = (productNames: string[]) => {
     setFullProductNames(productNames);
+    console.log("handleProductNameClick,:", productNames)
     setIsModalOpen(true);
   };
 

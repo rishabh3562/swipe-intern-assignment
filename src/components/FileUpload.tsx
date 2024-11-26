@@ -8,17 +8,17 @@ import { addProducts } from '../store/slices/productsSlice';
 import { addCustomers } from '../store/slices/customersSlice';
 import { extractDataFromImage, extractDataFromPDF, processExcelData } from '../services/aiService';
 import * as XLSX from 'xlsx';
-import { Invoice } from '../types';
+
 
 export const FileUpload: React.FC = () => {
   const dispatch = useDispatch();
 
-  const formatProductNames = (productDetails: any[], maxLength: number = 5) => {
+  const formatProductNames = (productDetails: any[]) => {
     const productNames = productDetails.map((product: any) => product.name);
 
-    if (productNames.length > maxLength) {
-      return `${productNames.slice(0, maxLength).join(", ")}...`;
-    }
+    // if (productNames.length > maxLength) {
+    //   return `${productNames.slice(0, maxLength).join(", ")}...`;
+    // }
 
     return productNames.join(", ");
   };
