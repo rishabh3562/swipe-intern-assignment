@@ -42,12 +42,12 @@ export const extractDataFromImage = async (file: File): Promise<any> => {
     ]);
 
     const resultText = await response.response.text();
-    console.log('API Response:', resultText); // Log the response text
+    // console.log('API Response:', resultText); // Log the response text
     const result = parseGeminiResponse(resultText); // Parse the response text
-    console.log('Parsed Result:', result); // Log the parsed result
+    // console.log('Parsed Result:', result); // Log the parsed result
     return result;
   } catch (error) {
-    console.error('Error extracting data from image:', error);
+    // console.error('Error extracting data from image:', error);
     throw error;
   }
 };
@@ -62,7 +62,7 @@ export const extractDataFromPDF = async (file: File): Promise<any> => {
 
 export const processExcelData = async (data: any[]): Promise<any> => {
   const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-  console.log('the data provided in parsexcel',data);
+  // console.log('the data provided in parsexcel',data);
  
   // const response = await model.generateContent(`
   //  Extract the following information from this Excel data in JSON format: serial number (invoice number or unique identifier), customer name, customer phone number, customer address, product details (name, quantity, unit price, GST percentage, GST amount), discount percentage, tax percentage, tax amount, making charges, debit card charges, shipping charges, taxable amount, CGST, SGST, total amount, date, and bank details (bank name, account number, IFSC code, branch, beneficiary name, UPI). Format the response as valid JSON:
@@ -141,9 +141,9 @@ const response = await model.generateContent(`
 
 */
  const resultText = await response.response.text();
-    console.log('API Response:', resultText); // Log the response text
+    // console.log('API Response:', resultText); // Log the response text
     const result = parseGeminiResponse(resultText); // Parse the response text
-    console.log('Parsed Result:', result); // Log the parsed result
+    // console.log('Parsed Result:', result); // Log the parsed result
     return result;
   return JSON.parse(result);
 };

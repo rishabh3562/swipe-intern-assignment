@@ -21,10 +21,10 @@ export const DataTable: React.FC<DataTableProps> = ({ data, columns, onEdit }) =
   const [fullProductNames, setFullProductNames] = useState<string[]>([]);
 
 
-console.log("data in data table and coloumns in data table",{data,columns})
+// console.log("data in data table and coloumns in data table",{data,columns})
   const handleProductNameClick = (productNames: string[]) => {
     setFullProductNames(productNames);
-    console.log("handleProductNameClick,:", productNames)
+    // console.log("handleProductNameClick,:", productNames)
     setIsModalOpen(true);
   };
 

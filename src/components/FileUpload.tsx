@@ -27,15 +27,15 @@ export const FileUpload: React.FC = () => {
       let data;
 
       if (file.type.includes('image')) {
-        console.log("data in image before await call", data);
+        // console.log("data in image before await call", data);
         data = await extractDataFromImage(file);
-        console.log("data in image await await call", data);
+        // console.log("data in image await await call", data);
 
       } else if (file.type.includes('pdf')) {
-        console.log("data in PDF before await call", data);
+        // console.log("data in PDF before await call", data);
 
         data = await extractDataFromPDF(file);
-        console.log("data in PDF await await call", data);
+        // console.log("data in PDF await await call", data);
       } 
       else if (file.type.includes('sheet') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
         const reader = new FileReader();
@@ -47,10 +47,10 @@ export const FileUpload: React.FC = () => {
         const workbook = XLSX.read(result, { type: 'binary' });
         const sheetName = workbook.SheetNames[0];
         const excelData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-        console.log("data in excel before await call", data);
+        // console.log("data in excel before await call", data);
         data = await processExcelData(excelData);
 
-        console.log("data in excel after await call", data);
+        // console.log("data in excel after await call", data);
       } else {
         throw new Error('Unsupported file format');
       }
@@ -133,7 +133,7 @@ export const FileUpload: React.FC = () => {
 
       toast.success('File processed successfully');
     } catch (error) {
-      console.error('Error processing file:', error);
+      // console.error('Error processing file:', error);
       toast.error('Error processing file. Please try again.');
     }
   };

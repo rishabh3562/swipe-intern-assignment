@@ -15,9 +15,9 @@ const invoicesSlice = createSlice({
       if (index !== -1) {
         state[index] = action.payload;
       }
-      console.log('Updated invoice:', action.payload);
-      console.log('Invoices state:', state);
-      console.log('Index:', index);
+      // console.log('Updated invoice:', action.payload);
+      // console.log('Invoices state:', state);
+      // console.log('Index:', index);
     },
     updateInvoiceProduct: (state, action: PayloadAction<{ id: string; productName: string }>) => {
       const invoice = state.find((inv) => inv.id === action.payload.id);
