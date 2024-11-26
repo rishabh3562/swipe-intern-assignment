@@ -92,8 +92,40 @@ export const FileUpload: React.FC = () => {
         dispatch(addProducts(some));
       }
 
+      
+      // Address parsing helper function
+      const parseAddress = (address: string | null): string => {
+        if (!address) return "N/A"; // Fallback if address is null
+        return address.replace(/\n/g, ", ").trim(); // Replace newlines with commas
+      };
+      if (data) {
+        const customers: any = [
+          {
+            serialNumber: data.serial_number,
+            customerName: data.customer_name,
+            phoneNumber: data.customer_phone_number || "N/A", // Default to "N/A" if null
+            address: parseAddress(data.customer_address),
+            totalAmount: data.total_amount,
+            bankDetails: {
+              bankName: data.bank_details?.bank_name || "N/A",
+              accountNumber: data.bank_details?.account_number || "N/A",
+              IFSCCode: data.bank_details?.IFSC_code || "N/A",
+              branch: data.bank_details?.branch || "N/A",
+              beneficiaryName: data.bank_details?.beneficiary_name || "N/A",
+              UPI: data.bank_details?.UPI || "N/A",
+            },
+            taxableAmount: data.taxable_amount,
+            taxAmount:data.tax_amount,
+            lastPurchaseDate: data.date,
+          },
+        ];
 
-      if (data.customers) { dispatch(addCustomers(data.customers)); }
+        dispatch(addCustomers(customers));
+      }
+
+      // Address parsing helper function
+ 
+
 
       toast.success('File processed successfully');
     } catch (error) {

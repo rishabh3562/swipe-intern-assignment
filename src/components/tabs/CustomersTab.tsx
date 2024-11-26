@@ -5,11 +5,12 @@ import { RootState } from '../../store';
 import { updateCustomer } from '../../store/slices/customersSlice';
 
 const columns = [
-  { key: 'name', header: 'Customer Name', width: '25%' },
+  { key: 'customerName', header: 'Customer Name', width: '25%' },
   { key: 'phoneNumber', header: 'Phone Number', width: '20%' },
-  { key: 'totalPurchaseAmount', header: 'Total Purchase Amount', width: '20%' },
-  { key: 'email', header: 'Email', width: '20%' },
+  { key: 'totalAmount', header: 'Total Purchase Amount', width: '20%' },
+  { key: 'taxAmount', header: 'Total Tax Amount', width: '20%' },
   { key: 'lastPurchaseDate', header: 'Last Purchase', width: '15%' },
+  { key: 'address', header: 'Address', width: '15%' },
 ];
 
 export const CustomersTab: React.FC = () => {
