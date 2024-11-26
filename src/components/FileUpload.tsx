@@ -9,8 +9,11 @@ import { addCustomers } from '../store/slices/customersSlice';
 import { extractDataFromImage, extractDataFromPDF, processExcelData } from '../services/aiService';
 import * as XLSX from 'xlsx';
 
-
-export const FileUpload: React.FC = () => {
+interface FileUploadProps {
+  onUploadStart: () => void;
+  onUploadComplete: () => void;
+}
+export const FileUpload: React.FC<FileUploadProps> = ({ onUploadStart, onUploadComplete }) => {
   const dispatch = useDispatch();
 
   const formatProductNames = (productDetails: any[]) => {
@@ -23,6 +26,7 @@ export const FileUpload: React.FC = () => {
     return productNames.join(", ");
   };
   const processFile = async (file: File) => {
+    onUploadStart();
     try {
       let data;
 
@@ -135,6 +139,9 @@ export const FileUpload: React.FC = () => {
     } catch (error) {
       // console.error('Error processing file:', error);
       toast.error('Error processing file. Please try again.');
+    }finally{
+
+      onUploadComplete();// End upload
     }
   };
 

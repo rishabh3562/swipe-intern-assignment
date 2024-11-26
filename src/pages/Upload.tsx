@@ -5,6 +5,7 @@ import { store } from '../store';
 import { FileUpload } from '../components/FileUpload';
 import { Wrapper } from '../components/Wrapper';
 import { Toaster } from 'react-hot-toast';
+import { Oval } from 'react-loader-spinner'; // Importing loader
 
 // Lazy load tab components
 const InvoicesTab = lazy(() =>
@@ -23,14 +24,17 @@ const tabs = [
     { id: 'customers', label: 'Customers', icon: Users, component: CustomersTab },
 ];
 
-function App() {
-    const [activeTab, setActiveTab] = useState('invoices');
+const App: React.FC = () => {
+    const [activeTab, setActiveTab] = useState<string>('invoices');
+    const [isUploading, setIsUploading] = useState<boolean>(false); // Track upload status
 
     const ActiveComponent = tabs.find((tab) => tab.id === activeTab)?.component || InvoicesTab;
 
+    const handleUploadStart = () => setIsUploading(true); // Start upload
+    const handleUploadComplete = () => setIsUploading(false); // End upload
+
     return (
         <Provider store={store}>
-            {/* <Navbar ishome={false}/> */}
             <div className="min-h-screen bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="bg-white rounded-lg shadow">
@@ -39,7 +43,11 @@ function App() {
                                 Invoice Management System
                             </h1>
 
-                            <FileUpload />
+                            {/* Pass the upload handlers to FileUpload */}
+                            <FileUpload
+                                onUploadStart={handleUploadStart}
+                                onUploadComplete={handleUploadComplete}
+                            />
 
                             <div className="mt-8">
                                 <div className="border-b border-gray-200">
@@ -69,9 +77,24 @@ function App() {
                                 </div>
 
                                 <div className="mt-8">
-                                    <Wrapper element={<ActiveComponent />} />
-
-
+                                    {/* Show loader while uploading */}
+                                    {isUploading ? (
+                                        <div className="flex justify-center items-center">
+                                            <Oval
+                                                visible={true}
+                                                height="80"
+                                                width="80"
+                                                color="#3949ab"
+                                                ariaLabel="oval-loading"
+                                                secondaryColor="#626ebc"
+                                                wrapperStyle={{}}
+                                                wrapperClass=""
+                                               
+                                            />
+                                        </div>
+                                    ) : (
+                                        <Wrapper element={<ActiveComponent />} />
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -81,6 +104,6 @@ function App() {
             <Toaster position="top-right" />
         </Provider>
     );
-}
+};
 
 export default App;

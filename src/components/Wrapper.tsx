@@ -1,7 +1,7 @@
 import React, { Suspense, ReactNode } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import ErrorBoundary from "./ErrorBoundary";
-
+import { Oval } from "react-loader-spinner";
 interface ProtectedRouteProps {
   isAuth: boolean;
 }
@@ -16,7 +16,16 @@ interface FallbackProps {
 
 const Fallback: React.FC<FallbackProps> = ({ element }) => (
   <ErrorBoundary>
-    <Suspense fallback={<div>Loading...</div>}>{element}</Suspense>
+    <Suspense fallback={<div className="flex justify-center items-center h-full">
+      <Oval
+        visible={true}
+        height="80"
+        width="80"
+        color="#3949ab"
+        ariaLabel="oval-loading"
+        secondaryColor="#626ebc"
+      />
+    </div>}>{element}</Suspense>
   </ErrorBoundary>
 );
 
